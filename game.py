@@ -12,6 +12,7 @@ class Game:
 	x = 0
 	y = 0
 	
+	
 	def paint(self):
 		if self.painting:
 			half_brush_size = self.brush_size / 2
@@ -19,34 +20,44 @@ class Game:
 						max(self.x - half_brush_size, 0) : min(self.x + half_brush_size, self.WIDTH),
 						:] = np.array(self.colour)[None, None, :]
 			
-	def move_up(self):
-		if self.is_valid_y_movement(self.y - self.movement_amount):
-			self.y -= self.movement_amount
+	def move_up(self, amount):
+		while amount > 0:
+			print 'amount', amount
+			if self.is_valid_y_movement(self.y - self.movement_amount):
+				self.y -= self.movement_amount
+				amount -= 1
+				self.paint()
+
+	def move_down(self, amount=1):
+		while amount > 0:
+			if self.is_valid_y_movement(self.y + self.movement_amount):
+				self.y += self.movement_amount
+				amount -= 1
+				self.paint()
+
+	def move_left(self, amount=1):
+		while amount > 0:
+			if self.is_valid_x_movement(self.x - self.movement_amount):
+				self.x -= self.movement_amount
+				amount -= 1
+				self.paint()
 
 
-	def move_down(self):
-		if self.is_valid_y_movement(self.y + self.movement_amount):
-			self.y += self.movement_amount
-
-
-	def move_left(self):
-		if self.is_valid_x_movement(self.x - self.movement_amount):
-			self.x -= self.movement_amount
-
-
-	def move_right(self):
-		if self.is_valid_x_movement(self.x + self.movement_amount):
-			self.x += self.movement_amount
-
+	def move_right(self, amount=1):
+		while amount > 0:
+			if self.is_valid_x_movement(self.x + self.movement_amount):
+				self.x += self.movement_amount
+				amount -= 1
+				self.paint()
 
 	def is_valid_x_movement(self, x):
 		half_brush_size = self.brush_size / 2
-		return half_brush_size <= x <= self.WIDTH - half_brush_size
+		return 0 <= x <= self.WIDTH
 
 
 	def is_valid_y_movement(self, y):
 		half_brush_size = self.brush_size / 2
-		return half_brush_size <= y  <= self.HEIGHT - half_brush_size
+		return 0 <= y  <= self.HEIGHT
 
 
 	def change_size(self, size):

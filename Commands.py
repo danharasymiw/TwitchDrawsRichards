@@ -2,17 +2,13 @@ UP = 'up'
 DOWN = 'down'
 LEFT = 'left'
 RIGHT = 'right'
+MOVEMENT = [UP, DOWN, LEFT, RIGHT]
 
 LIFT = 'lift'
 RAISE = 'raise'
 LOWER = 'lower'
-
-COLOR = 'color'
-COLOUR = 'colour'
-
 SIZE = 'size'
-
-COMMANDS = [UP, DOWN, LEFT, RIGHT, LIFT, LOWER, SIZE]
+BRUSH = [LIFT, LOWER, SIZE]
 
 MIN_BRUSH_SIZE = 5
 MAX_BRUSH_SIZE = 20

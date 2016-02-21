@@ -11,24 +11,36 @@ def parse_message(message):
 			message_strings = message['message'].split()
 
 			command = message_strings[0]
-
+			
 			legit_command = False
-			if command in Commands.COMMANDS:
+			if command in Commands.MOVEMENT:
 				legit_command = True
-
+				
+				if len(message_strings) > 1:
+					try:
+						amount = min(int(message_strings[1]), 5)
+					except:
+						amount = 1
+				else:
+					amount = 1
+						
 				if command == Commands.UP:
-					game.move_up()
+					print 'up'
+					game.move_up(amount)
 
 				elif command == Commands.DOWN:
-					game.move_down()
+					game.move_down(amount)
 
 				elif command == Commands.LEFT:
-					game.move_left()
+					game.move_left(amount)
 
 				elif command == Commands.RIGHT:
-					game.move_right()
+					game.move_right(amount)
 
-				elif command == Commands.LIFT or command == Commands.RAISE:
+			elif command in Commands.BRUSH:
+				legit_command = True
+				
+				if command == Commands.LIFT or command == Commands.RAISE:
 					game.painting = False
 
 				elif command == Commands.LOWER:
@@ -48,6 +60,7 @@ def parse_message(message):
 				
 				
 			elif command in Commands.DEBUGGING_COMMANDS:
+				legit_command = True
 				print ('ADMIN COMMAND')
 				if command == Commands.RESET:
 					game.reset()
@@ -60,7 +73,7 @@ def parse_message(message):
 					command
 				))
 		except:
-			pass		
+			print 'error'
 
 
 if __name__ == "__main__":
@@ -69,15 +82,15 @@ if __name__ == "__main__":
 	
 	# load two streams, one for video one for chat
 	with TwitchBufferedOutputStream(
-			twitch_stream_key=STREAMKEY,
+			twitch_stream_key=streaminfo.STREAMKEY,
 			width=640,
 			height=480,
 			fps=10.,
 			enable_audio=True,
 			verbose=False) as videostream, \
 			TwitchChatStream(
-				username=USERNAME,
-				oauth=OAUTH,
+				username=streaminfo.USERNAME,
+				oauth=streaminfo.OAUTH,
 				verbose=False) as chatstream:
 
 		chatstream.send_chat_message('connected to chat...')
