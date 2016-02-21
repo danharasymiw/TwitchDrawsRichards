@@ -28,7 +28,7 @@ def parse_message(message):
 				elif command == Commands.RIGHT:
 					game.move_right()
 
-				elif command == Commands.LIFT:
+				elif command == Commands.LIFT or command == Commands.RAISE:
 					game.painting = False
 
 				elif command == Commands.LOWER:
@@ -99,8 +99,3 @@ if __name__ == "__main__":
 			# if there are not enough frames left, add more
 			if videostream.get_video_frame_buffer_state() < 10:
 				videostream.send_video_frame(game.frame)
-				
-			
-			
-		
-

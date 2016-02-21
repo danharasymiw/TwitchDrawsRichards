@@ -4,6 +4,7 @@ LEFT = 'left'
 RIGHT = 'right'
 
 LIFT = 'lift'
+RAISE = 'raise'
 LOWER = 'lower'
 
 COLOR = 'color'
