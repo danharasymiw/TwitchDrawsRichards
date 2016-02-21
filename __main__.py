@@ -52,11 +52,11 @@ def parse_message(message):
 
 			elif command in COLOURS_DICT.keys():
 				legit_command = True
-				game.colour = COLOURS_DICT[command]
+				game.change_colour(COLOURS_DICT[command])
 
 			elif is_hex_colour_code(command):
 				legit_command = True
-				game.colour = convert_hex_colour_code(command)
+				game.change_colour(convert_hex_colour_code(command))
 				
 				
 			elif command in Commands.DEBUGGING_COMMANDS:
