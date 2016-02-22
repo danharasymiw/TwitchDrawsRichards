@@ -9,8 +9,8 @@ class Game:
 	colour = [0, 0, 0]
 	brush_size = 10
 	movement_amount = 10
-	x = 0
-	y = 0
+	x = self.HEIGHT / 2
+	y = self.WIDTH / 2
 	
 	prev_x = x
 	prev_y = y
@@ -20,24 +20,20 @@ class Game:
 	
 	def paint(self):
 		# redo last painting instruction to draw over cursor
-		print 'prev x', self.prev_x, 'prev y', self.prev_y
-		print 'x', self.x, 'y', self.y
-		prev_half_brush_size = self.prev_brush_size / 2
-		self.frame[max(self.prev_y - prev_half_brush_size, 0) : min(self.prev_y + prev_half_brush_size, self.HEIGHT),
-						max(self.prev_x - prev_half_brush_size, 0) : min(self.prev_x + prev_half_brush_size, self.WIDTH),
+		self.frame[max(self.prev_y - self.prev_brush_size, 0) : min(self.prev_y + self.prev_brush_size, self.HEIGHT),
+						max(self.prev_x - self.prev_brush_size, 0) : min(self.prev_x + self.prev_brush_size, self.WIDTH),
 						:] = np.array(self.prev_colour)[None, None, :]
 		
 		if self.painting:
-			half_brush_size = self.brush_size / 2
-			self.frame[max(self.y - half_brush_size, 0) : min(self.y + half_brush_size, self.HEIGHT),
-						max(self.x - half_brush_size, 0) : min(self.x + half_brush_size, self.WIDTH),
+			self.frame[max(self.y - self.brush_size, 0) : min(self.y + self.brush_size, self.HEIGHT),
+						max(self.x - self.brush_size, 0) : min(self.x + self.brush_size, self.WIDTH),
 						:] = np.array(self.colour)[None, None, :]
 						
 		# top and bottom of cursor
 		self.frame[max(self.y - 1, 0) : min(self.y + 1, self.HEIGHT),
-					max(self.x - half_brush_size, 0) : min(self.x + half_brush_size, self.WIDTH),
+					max(self.x - self.brush_size, 0) : min(self.x + self.brush_size, self.WIDTH),
 					:] = np.array((0, 1, 1))[None, None, :]
-		self.frame[max(self.y - half_brush_size, 0) : min(self.y + half_brush_size, self.HEIGHT),
+		self.frame[max(self.y - self.brush_size, 0) : min(self.y + self.brush_size, self.HEIGHT),
 					max(self.x - 1, 0) : min(self.x + 1, self.WIDTH),
 					:] = np.array((1, 1, 0))[None, None, :]
 		
@@ -79,12 +75,10 @@ class Game:
 				self.paint()
 
 	def is_valid_x_movement(self, x):
-		half_brush_size = self.brush_size / 2
 		return 0 <= x <= self.WIDTH
 
 
 	def is_valid_y_movement(self, y):
-		half_brush_size = self.brush_size / 2
 		return 0 <= y  <= self.HEIGHT
 
 
@@ -92,7 +86,7 @@ class Game:
 		if Commands.MIN_BRUSH_SIZE <= size <= Commands.MAX_BRUSH_SIZE:
 			self.movement_amount = size - 1
 			self.set_previous_brush()
-			self.brush_size = size
+			self.brush_size = size / 2
 			self.paint()
 			
 	def change_colour(self, colour):
@@ -113,11 +107,7 @@ class Game:
 		self.change_size(Commands.DEFAULT_BRUSH_SIZE)
 		self.x = self.WIDTH / 2
 		self.y = self.HEIGHT / 2
-		
-		self.prev_x = self.x
-		self.prev_y = self.y
-		self.prev_brush_size = self.brush_size
-		self.prev_colour = self.colour
+		self.set_previous_brush()
 		self.paint()		
 
 	def clear_board(self):
