@@ -9,14 +9,9 @@ class Game:
 	colour = [0, 0, 0]
 	brush_size = 10
 	movement_amount = 10
-	x = self.HEIGHT / 2
-	y = self.WIDTH / 2
-	
-	prev_x = x
-	prev_y = y
-	prev_brush_size = brush_size
-	prev_colour = colour
-	
+	x = HEIGHT / 2
+	y = WIDTH / 2
+	frame = np.zeros((HEIGHT, WIDTH, 3))
 	
 	def paint(self):
 		# redo last painting instruction to draw over cursor
@@ -42,7 +37,6 @@ class Game:
 			
 	def move_up(self, amount):
 		while amount > 0:
-			print 'amount', amount
 			if self.is_valid_y_movement(self.y - self.movement_amount):
 				self.set_previous_brush()
 				self.y -= self.movement_amount
@@ -103,11 +97,11 @@ class Game:
 
 	def reset(self):
 		print ('resetting')
-		self.clear_board()
 		self.change_size(Commands.DEFAULT_BRUSH_SIZE)
 		self.x = self.WIDTH / 2
 		self.y = self.HEIGHT / 2
 		self.set_previous_brush()
+		self.clear_board()
 		self.paint()		
 
 	def clear_board(self):
