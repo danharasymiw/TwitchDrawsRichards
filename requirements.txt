@@ -1,0 +1,1 @@
+python-twitch-stream==1.0.1
